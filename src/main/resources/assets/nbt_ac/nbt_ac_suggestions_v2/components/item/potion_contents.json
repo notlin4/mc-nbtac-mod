@@ -32,6 +32,11 @@
 					"type": "float"
 				}
 			]
+		},
+
+		{
+			"tag": "custom_name",
+			"type": "json_text"
 		}
 	]
 }

@@ -109,19 +109,19 @@ public class DataComponentManager
 		else
 		{
 			if (item == Items.DEBUG_STICK) { relevant.add(DataComponents.DEBUG_STICK_STATE); }
+			if (item == Items.OMINOUS_BOTTLE) { relevant.add(DataComponents.OMINOUS_BOTTLE_AMPLIFIER); }
+			if (item == Items.ENCHANTED_BOOK) { relevant.add(DataComponents.STORED_ENCHANTMENTS); }
 			if (item instanceof FireworkStarItem) { relevant.add(DataComponents.FIREWORK_EXPLOSION); }
 			if (item instanceof FireworkRocketItem) { relevant.add(DataComponents.FIREWORKS); }
 			if (item instanceof InstrumentItem) { relevant.add(DataComponents.INSTRUMENT); }
 			if (item instanceof CrossbowItem) { relevant.add(DataComponents.CHARGED_PROJECTILES); }
 			if (item instanceof ArrowItem) { relevant.add(DataComponents.INTANGIBLE_PROJECTILE); }
 			if (item instanceof CompassItem) { relevant.add(DataComponents.LODESTONE_TRACKER); }
-			if (item instanceof OminousBottleItem) { relevant.add(DataComponents.OMINOUS_BOTTLE_AMPLIFIER); }
 			if (item instanceof KnowledgeBookItem) { relevant.add(DataComponents.RECIPES); }
-			if (item instanceof EnchantedBookItem) { relevant.add(DataComponents.STORED_ENCHANTMENTS); }
 			if (item instanceof WritableBookItem) { relevant.add(DataComponents.WRITABLE_BOOK_CONTENT); }
 			if (item instanceof WrittenBookItem) { relevant.add(DataComponents.WRITTEN_BOOK_CONTENT); }
 
-			if (item instanceof ArmorItem && ((ArmorItem)item).getType() != ArmorItem.Type.BODY)
+			if (item instanceof ArmorItem)
 			{
 				relevant.add(DataComponents.TRIM);
 			}

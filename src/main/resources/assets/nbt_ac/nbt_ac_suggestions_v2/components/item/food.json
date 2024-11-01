@@ -20,36 +20,6 @@
 		{
 			"tag": "can_always_eat",
 			"type": "boolean"
-		},
-
-		{
-			"tag": "eat_seconds",
-			"type": "float"
-		},
-
-		{
-			"tag": "using_converts_to",
-			"type": "compound",
-			"subtype": "tag/compound/nbt_ac:item"
-		},
-
-		{
-			"tag": "effects",
-			"type": "list/compound",
-
-			"tags":
-			[
-				{
-					"tag": "effect",
-					"type": "compound",
-					"subtype": "tag/compound/nbt_ac:effect"
-				},
-
-				{
-					"tag": "probability",
-					"type": "float"
-				}
-			]
 		}
 	]
 }

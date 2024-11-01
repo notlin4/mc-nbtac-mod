@@ -1,6 +1,7 @@
 package com.mt1006.nbt_ac.mixin.constructors;
 
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureElement;
 import net.minecraft.world.level.Level;
@@ -17,8 +18,8 @@ public abstract class EntityTypeMixin<T extends Entity> implements FeatureElemen
 {
 	@Shadow @Final private EntityType.EntityFactory<T> factory;
 
-	@Inject(method = "create(Lnet/minecraft/world/level/Level;)Lnet/minecraft/world/entity/Entity;", at = @At(value = "HEAD"), cancellable = true)
-	public void create(Level level, CallbackInfoReturnable<T> cir)
+	@Inject(method = "create(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/EntitySpawnReason;)Lnet/minecraft/world/entity/Entity;", at = @At(value = "HEAD"), cancellable = true)
+	public void create(Level level, EntitySpawnReason spawnReason, CallbackInfoReturnable<T> cir)
 	{
 		if (level == null)
 		{

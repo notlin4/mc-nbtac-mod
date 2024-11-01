@@ -12,10 +12,10 @@ import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
 
@@ -24,18 +24,18 @@ import org.slf4j.Logger;
 public class NBTac
 {
 	public static final String MOD_ID = "nbt_ac";
-	public static final String VERSION = "1.3.6";
-	public static final String FOR_VERSION = "1.21.1";
+	public static final String VERSION = "1.3.7";
+	public static final String FOR_VERSION = "1.21.3";
 	public static final String FOR_LOADER = "Forge";
 	public static final Logger LOGGER = LogUtils.getLogger();
 	public static final boolean isDedicatedServer = FMLEnvironment.dist.isDedicatedServer();
 
-	public NBTac()
+	public NBTac(FMLJavaModLoadingContext ctx)
 	{
 		if (isDedicatedServer) { return; }
 
 		MinecraftForge.EVENT_BUS.register(this);
-		ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, ConfigScreenFactory::create);
+		ctx.registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, ConfigScreenFactory::create);
 
 		((ReloadableResourceManager)Minecraft.getInstance().getResourceManager()).registerReloadListener(new ResourceLoader());
 	}

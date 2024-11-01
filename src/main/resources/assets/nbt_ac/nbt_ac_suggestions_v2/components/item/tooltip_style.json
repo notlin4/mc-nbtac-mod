@@ -1,0 +1,5 @@
+{
+	"id": "item/minecraft:tooltip_style",
+	"type": "string",
+	"always_relevant": true
+}

@@ -1,5 +1,6 @@
 package com.mt1006.nbt_ac.utils;
 
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -42,12 +43,13 @@ public class RegistryUtils
 
 		public @Nullable T get(ResourceLocation resLoc)
 		{
-			return registry.get(resLoc);
+			Holder.Reference<T> ref = registry.get(resLoc).orElse(null);
+			return ref != null ? ref.value() : null;
 		}
 
 		public @Nullable T get(String resLoc)
 		{
-			return registry.get(ResourceLocation.parse(resLoc));
+			return get(ResourceLocation.parse(resLoc));
 		}
 
 		public Set<ResourceLocation> keySet()

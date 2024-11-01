@@ -1,4 +1,41 @@
 {
 	"id": "item/minecraft:lock",
-	"type": "string"
+	"type": "compound",
+
+	"tags":
+	[
+		{
+			"tag": "items",
+			"type": "list/string",
+			"subtype": "registry_key/minecraft:item"
+		},
+
+		{
+			"tag": "count",
+			"type": "compound",
+
+			"tags":
+			[
+				{
+					"tag": "min",
+					"type": "int"
+				},
+
+				{
+					"tag": "max",
+					"type": "int"
+				}
+			]
+		},
+
+		{
+			"tag": "components",
+			"type": "compound"
+		},
+
+		{
+			"tag": "predicates",
+			"type": "compound"
+		}
+	]
 }

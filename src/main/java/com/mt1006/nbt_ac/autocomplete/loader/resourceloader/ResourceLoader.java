@@ -14,7 +14,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.util.profiling.ProfilerFiller;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -42,14 +41,12 @@ public class ResourceLoader implements SimpleResourceReloadListener<Map<Resource
 		return ResourceLocation.fromNamespaceAndPath("nbt_ac", "nbt_ac");
 	}
 
-	@Override public CompletableFuture<Map<ResourceLocation, JsonElement>> load(ResourceManager manager,
-																				ProfilerFiller profiler, Executor executor)
+	@Override public CompletableFuture<Map<ResourceLocation, JsonElement>> load(ResourceManager manager, Executor executor)
 	{
-		return CompletableFuture.supplyAsync(() -> prepare(manager, profiler));
+		return CompletableFuture.supplyAsync(() -> prepare(manager));
 	}
 
-	private @NotNull Map<ResourceLocation, JsonElement> prepare(@NotNull ResourceManager resourceManager,
-																@NotNull ProfilerFiller profilerFiller)
+	private @NotNull Map<ResourceLocation, JsonElement> prepare(@NotNull ResourceManager resourceManager)
 	{
 		Gson gson = new Gson();
 		Map<ResourceLocation, JsonElement> map = Maps.newHashMap();
@@ -70,8 +67,7 @@ public class ResourceLoader implements SimpleResourceReloadListener<Map<Resource
 	}
 
 	@Override public CompletableFuture<Void> apply(@NotNull Map<ResourceLocation, JsonElement> resources,
-												   @NotNull ResourceManager resourceManager,
-												   @NotNull ProfilerFiller profilerFiller, Executor executor)
+												   @NotNull ResourceManager resourceManager, Executor executor)
 	{
 		if (!firstCall) { return CompletableFuture.runAsync(() -> {}); }
 		firstCall = false;

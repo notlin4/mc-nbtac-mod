@@ -10,6 +10,7 @@ import com.mt1006.nbt_ac.utils.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -40,7 +41,7 @@ public class TypeLoader
 			{
 				try
 				{
-					entityType.create(null); // lastObject set by mixin (constructors.EntityMixin)
+					entityType.create(null, EntitySpawnReason.COMMAND); // lastObject set by mixin (constructors.EntityMixin)
 				}
 				catch (Throwable throwable)
 				{

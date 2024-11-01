@@ -8,7 +8,6 @@ import com.mt1006.nbt_ac.utils.RegistryUtils;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.font.FontManager;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
@@ -17,10 +16,13 @@ import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.armortrim.TrimMaterials;
-import net.minecraft.world.item.armortrim.TrimPatterns;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.equipment.trim.TrimMaterials;
+import net.minecraft.world.item.equipment.trim.TrimPatterns;
 import net.minecraft.world.level.block.entity.BannerPatterns;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
@@ -67,7 +69,8 @@ public enum NbtSuggestionSubtype
 	POT_DECORATION,       // subtypeData = null
 	TRIM_PATTERN,         // subtypeData = null
 	TRIM_MATERIAL,        // subtypeData = null
-	JUKEBOX_SONG;         // subtypeData = null
+	JUKEBOX_SONG,         // subtypeData = null
+	DAMAGE_TYPE_TAG;      // subtypeData = null
 
 	private static final List<String> JSON_TEXT_TYPE_SPECIFIC = List.of("nbt", "translatable");
 	private static final List<String> JSON_TEXT_TYPE_HAS_SEPARATOR = List.of("nbt", "selector");
@@ -157,7 +160,8 @@ public enum NbtSuggestionSubtype
 				try
 				{
 					ResourceLocation registryLocation = ResourceLocation.parse(data);
-					Registry<T> registry = (Registry<T>)RegistryUtils.REGISTRY.get(registryLocation);
+					Holder.Reference<?> ref = RegistryUtils.REGISTRY.get(registryLocation).orElse(null);
+					Registry<T> registry = ref != null ? (Registry<T>)ref.value() : null;
 					if (registry == null) { break; }
 
 					suggestionList.clear();
@@ -183,13 +187,13 @@ public enum NbtSuggestionSubtype
 				return true;
 
 			case RECIPE:
-				ClientLevel recipeLevel = Minecraft.getInstance().level;
-				if (recipeLevel == null) { break; }
+				MinecraftServer recipeServer = Minecraft.getInstance().getSingleplayerServer();
+				if (recipeServer == null) { break; }
 
 				suggestionList.clear();
-				for (ResourceLocation id : recipeLevel.getRecipeManager().getRecipeIds().toArray(ResourceLocation[]::new))
+				for (RecipeHolder<?> recipeHolder : recipeServer.getRecipeManager().getRecipes().toArray(RecipeHolder[]::new))
 				{
-					suggestionList.add(new IdSuggestion(id, null, parserType));
+					suggestionList.add(new IdSuggestion(recipeHolder.id().location(), null, parserType));
 				}
 				return true;
 
@@ -368,6 +372,13 @@ public enum NbtSuggestionSubtype
 				suggestionList.clear();
 				List<ResourceKey> jukeboxSong = Fields.getStaticFields(JukeboxSongs.class, ResourceKey.class);
 				jukeboxSong.forEach((key) -> suggestionList.add(new IdSuggestion(key.location(), "[#jukebox_song]", parserType)));
+				return true;
+
+			case DAMAGE_TYPE_TAG:
+				suggestionList.clear();
+				List<TagKey> damageTypes = Fields.getStaticFields(DamageTypeTags.class, TagKey.class);
+				//TODO: fix, use IdSuggestion
+				damageTypes.forEach((key) -> suggestionList.add(new StringSuggestion("#" + key.location(), "[#damage_type]", parserType)));
 				return true;
 		}
 
